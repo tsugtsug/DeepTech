@@ -7,7 +7,7 @@
 
 ### tx.ino is a file to send a packet.
 
-### sernsorMagnetique.ino is a file to detect the door is open or closed.
+### sernsorMagnetique.ino is a file to detect whether the door is open or closed.
 
 ### stop.ino is a file to do nothing, stop other programs.
 

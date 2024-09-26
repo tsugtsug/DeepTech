@@ -5,7 +5,7 @@
 
 ### rx.ino is a file to recive a packet.
 
-### tx.ino is a file to send a packet.
+### tx_with_sensor.ino is a file to send a packet.
 
 ### sernsorMagnetique.ino is a file to detect whether the door is open or closed.
 

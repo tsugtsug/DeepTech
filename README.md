@@ -12,3 +12,4 @@
 ### stop.ino is a file to do nothing, stop other programs.
 
 
+### shower room pin ：　194AC

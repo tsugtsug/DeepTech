@@ -11,7 +11,7 @@ void setup() {
   // LoRaモジュールを初期化
   Serial.println("LoRa Sender");
   while (1) {
-    if (!LoRa.begin(915E6)) { // 915 MHzの周波数でLoRa通信を設定
+    if (!LoRa.begin(868E6)) { // 868 MHzの周波数でLoRa通信を設定
       Serial.println("Starting LoRa failed!");
     }
     else {
@@ -35,10 +35,10 @@ void loop() {
 
   if (sensorValue >= 800) { // Threshold level 
     Serial.println("HIGHT\nThe door is closed"); // (Serial)
-    LoRa.print("The door is closed"); // (LoRa)
+    LoRa.print(1); // (LoRa)
   } else {
     Serial.println("LOW\nThe door is open"); // (Serial)
-    LoRa.print("The door is open"); // (LoRa)
+    LoRa.print(0); // (LoRa)
   }
 
   LoRa.endPacket();  // パケットを送信完了 (LoRa end)

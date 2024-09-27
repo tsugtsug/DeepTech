@@ -3,13 +3,13 @@
 
 ## These are examples codes.
 
-- rx.ino is a file to recive a packet from another Arduino and send a packet to Serial Port(raspberry pi).
+- rx.ino : file to recive a packet from another Arduino and send a packet to Serial Port(raspberry pi).
 
-- tx_with_sensor.ino is a file to send a packet.
+- tx_with_sensor.ino : file to detect the door is open or not and send a packet 0(open) or 1(close).
 
-- serialConnect.py is a file used in raspberry pi to receive a packet from Arduino.
+- serialConnect.py : file used in raspberry pi to receive a packet from Arduino.
 
-- sernsorMagnetique.ino is a file to detect whether the door is open or closed.
+- sernsorMagnetique.ino : file to detect whether the door is open or closed.
 
 
 ### shower room pin ：　194AC

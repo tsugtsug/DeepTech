@@ -9,7 +9,5 @@
 
 - serialConnect.py : file used in raspberry pi to receive a packet from Arduino.
 
-- sernsorMagnetique.ino : file to detect whether the door is open or closed.
-
 
 ### shower room pin ：　194AC

@@ -3,7 +3,7 @@
 
 ## These are examples codes.
 
-- rx.ino is a file to recive a packet.
+- rx.ino is a file to recive a packet from another Arduino and send a packet to Serial Port(raspberry pi).
 
 - tx_with_sensor.ino is a file to send a packet.
 

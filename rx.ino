@@ -17,6 +17,12 @@ void setup() {
     }
     delay(1000);
   }
+  // GND 3本目
+  // 6 2本目 
+  pinMode(6, OUTPUT);
+  // 7 4本目
+  pinMode(7, OUTPUT);
+
 }
 
 void loop() {
@@ -32,9 +38,15 @@ void loop() {
       message = LoRa.readString();
     }
     if (message == "0") {
+      // GREEN
       Serial.println("open");
+      digitalWrite(6, LOW);
+      digitalWrite(7, HIGH);
     } else if (message == "1") {
+      // RED
       Serial.println("close");
+      digitalWrite(7, LOW);
+      digitalWrite(6, HIGH);
     } else {
       Serial.println("error" + message);
     }

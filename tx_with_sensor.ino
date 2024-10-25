@@ -33,7 +33,7 @@ void loop() {
 
   LoRa.beginPacket(); // LoRaパケットの開始 (LoRa begin)
 
-  if (sensorValue >= 800) { // Threshold level 
+  if (sensorValue >= 600 || sensorValue <= 400) { // Threshold level 
     Serial.println("HIGHT\nThe door is closed"); // (Serial)
     LoRa.print(1); // (LoRa)
   } else {
@@ -43,5 +43,5 @@ void loop() {
 
   LoRa.endPacket();  // パケットを送信完了 (LoRa end)
 
-  delay(5000);
+  delay(1000);
 }

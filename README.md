@@ -1,7 +1,6 @@
 # This is a project of the class DeepTech in Centrale Lille.
-## These files are used for LoRa.
 
-## These are examples codes.
+## These files are used for LoRa.
 
 - rx.ino : File to recive a packet from another Arduino and turn on the LED light.
 

@@ -3,8 +3,6 @@
 
 ## These are examples codes.
 
-- rx.ino : file to recive a packet from another Arduino and turn on the LED light.
+- rx.ino : File to recive a packet from another Arduino and turn on the LED light.
 
-- tx_with_sensor.ino : file to detect the door is open or not by magnetic sensor, after  that send a packet 0(open) or 1(close).
-
-### shower room pin ：　194AC
+- 2_sensor.ino : File to detect the presence of human in the room by magnetic sensor and infrarouge sensor, and send a packet 0, 1 or 2.

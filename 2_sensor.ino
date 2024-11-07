@@ -1,24 +1,24 @@
 #include <SPI.h>
 #include <LoRa.h>
 #include <Wire.h>
-#include <Adafruit_AMG88xx.h>  // AMG8833センサーのライブラリを追加
+#include <Adafruit_AMG88xx.h>
 
-Adafruit_AMG88xx amg;          // AMG8833のオブジェクトを宣言
-float pixels[AMG88xx_PIXEL_ARRAY_SIZE];  // 8x8の温度データを格納する配列
-const int sensorPin = A2;  // アナログピンを指定
+Adafruit_AMG88xx amg;          // AMG8833 Object
+float pixels[AMG88xx_PIXEL_ARRAY_SIZE];  // Array for the temperature data 8x8
+const int sensorPin = A2;  // PIN A2
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-  while (!amg.begin(0x68)){
+  while (!amg.begin(0x68)){ //　Address of capteur infrarouge
       Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
       delay(100);
-    }
+  }
 
-  // LoRaモジュールを初期化
+  // initialize the LoRa module
   Serial.println("LoRa Sender");
   while (1) {
-    if (!LoRa.begin(868E6)) { // 868 MHzの周波数でLoRa通信を設定
+    if (!LoRa.begin(868E6)) { // LoRa communication 868 MHz
       Serial.println("Starting LoRa failed!");
     }
     else {
@@ -30,55 +30,54 @@ void setup() {
 }
 
 void loop() {
-  //tempreture
+
+  // --- Temperature Part ---
   amg.readPixels(pixels);
-    int tem_sum = 0;
-    int tem_mean;
+  int tem_sum = 0;
+  int tem_mean;
 
-  // 8x8の温度データを表示
+  // Calculation of temperature mean
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++) {
-      // Serial.print(pixels[i], 1);  // 小数点以下1桁で温度を表示
       tem_sum += pixels[i];
-      // Serial.print("\t");
+  }
 
-      // 8ピクセルごとに改行
-      // if ((i + 1) % 8 == 0) {
-          // Serial.println();
-      // }
-  }
   tem_mean = tem_sum / 64;
-  Serial.print(tem_mean);
+  Serial.print("Temperature : ");
+  Serial.println(tem_mean);
+  // If the temperature is over 25 degrees, detecg someone in the room
   if(tem_mean > 25){
-    Serial.print("people inside");
+    Serial.println("Detect someone in the room !");
   }
-  Serial.println();
   
-  //magnetic
+  // --- Magnetic part ---
 
   Serial.println("");
-  int sensorValue = analogRead(sensorPin);  // アナログ信号を読み取る
+  int sensorValue = analogRead(sensorPin);  // Capturing by magnetic capture
   
   Serial.println("Sending packet..."); // (Serial)
 
-  Serial.println(sensorValue);  // 読み取った値を表示 (Serial)
+  Serial.print("Magnetic sensor value : ");  // Print magnetic value (Serial)
+  Serial.println(sensorValue);
 
-  LoRa.beginPacket(); // LoRaパケットの開始 (LoRa begin)
+  // --- LoRa Part ---
 
-  if (sensorValue >= 600 || sensorValue <= 400) { // Threshold level 
-    Serial.println("HIGHT\nThe door is closed"); // (Serial)
-    LoRa.print(1); // (LoRa)
+  LoRa.beginPacket(); // LoRa begin
+
+  if (sensorValue >= 250 && sensorValue <= 450) { // Threshold level 
+    Serial.println("The door is closed"); // (Serial)
+    LoRa.print(0); // CLOSE if magnetic sensor on, send "0"
   } else {
-    Serial.println("LOW\nThe door is open"); // (Serial)
-    if(tem_mean > 25) {
-      Serial.println("maybe people inside");
-      LoRa.print(2); // (LoRa)
+    Serial.println("The door is open"); // (Serial)
+    if(tem_mean >= 25) {
+      Serial.println("Someone forgot to close the door");
+      LoRa.print(1); // CLOSE if magnetic sensor off and the temperature is more than 25 degrees, send "1"
     }else{
-      LoRa.print(0); // (LoRa)
+      Serial.println("No one there");
+      LoRa.print(2); // OPEN if magnetic sensor off and the temperature is less than 25 degrees, send "2"
     }
-    // LoRa.print(0); // (LoRa)
   }
 
-  LoRa.endPacket();  // パケットを送信完了 (LoRa end)
+  LoRa.endPacket(); // LoRa end
 
-  delay(1000);
+  delay(1000); // delay 1 second
 }

@@ -28,8 +28,8 @@ void setup() {
     delay(1000);
   }
 
-  int timer = -1;
-  int flag = 0;
+  int timer = -1; // Variable for timer
+  int flag = 0; // Flag Enter　or Exit
 }
 
 void loop() {
@@ -41,7 +41,7 @@ void loop() {
 
   // Calculation of temperature mean
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++) {
-      tem_sum += pixels[i];
+    tem_sum += pixels[i];
   }
 
   tem_mean = tem_sum / 64;
@@ -71,24 +71,26 @@ void loop() {
   if (sensorValue >= 250 && sensorValue <= 450) { // Threshold level 
     Serial.println("The door is closed"); // (Serial)
     LoRa.print(0); // CLOSE if magnetic sensor on, send "0"
+    // If someone locks the door, timer stops
     timer = -1;
+    // If someone is in the room, flag is 1
     flag = 1;
     
-    buza = LOW
+    // Function of buzzer off
   } else {
     Serial.println("The door is open"); // (Serial)
     if(tem_mean >= 25) {
       Serial.println("Someone forgot to close the door");
       LoRa.print(1); // CLOSE if magnetic sensor off and the temperature is more than 25 degrees, send "1"
       
-      if(flag==1){
-            timer=-11;
-            flag = 0;
-        }else if (timer >= -1){
-            timer = 10;
-        }
+      if (flag == 1) { // When someone exits the shower room, wait 10 seconds after unlock the door
+        timer = -11;
+        flag = 0; // No one is in the shower room
+      } else if (timer >= -1) { // When someone enters the shower room, wait 10 seconds until lock the door
+        timer = 10;
+      }
 
-    }else{
+    } else {
       Serial.println("No one there");
       LoRa.print(2); // OPEN if magnetic sensor off and the temperature is less than 25 degrees, send "2"
     }
@@ -96,14 +98,15 @@ void loop() {
 
   LoRa.endPacket(); // LoRa end
 
-  if (timer >= 1){
-    timer--;
-  }else if(timer<-1){
-    timer++;
+  if (timer >= 1) { // When someone enters the room
+    timer--; // Decriment 1 second for every loop
+  } else if (timer < -1) { // When someone exits the room
+    timer++; // Incriment 1 second for every loop
   }
-  if (timer == 0){
-    buza = High;
+  
+  if (timer == 0){ // If timer is not -1, buzzer on
+    // Function of buzzer on
   }
 
-  delay(1000); // delay 1 second
+  delay(1000); // Wait 1 second
 }

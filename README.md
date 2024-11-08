@@ -5,3 +5,5 @@
 - rx.ino : File to recive a packet from another Arduino and turn on the LED light.
 
 - 2_sensor.ino : File to detect the presence of human in the room by magnetic sensor and infrarouge sensor, and send a packet 0, 1 or 2.
+
+- buzzer.ino : File to detect the presence of human in the room by magnetic sensor and infrarouge sensor, and send a packet 0, 1 or 2. And the buzzer alerts you to lock the door.
